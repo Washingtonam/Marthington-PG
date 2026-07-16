@@ -9,7 +9,8 @@ export default function Dashboard({ adminKey, onLogout }) {
   const [editingRoute, setEditingRoute] = useState(null);
   const [error, setError] = useState('');
 
-  const api = '/api/v1/admin';
+  const apiBase = import.meta.env.VITE_API_URL || 'https://marthington-pg.onrender.com';
+  const api = `${apiBase}/api/v1/admin`;
 
   const getHeaders = () => ({
     'Content-Type': 'application/json',
