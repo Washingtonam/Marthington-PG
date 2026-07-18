@@ -14,6 +14,21 @@ const serviceRouteSchema = new mongoose.Schema({
     trim: true,
     lowercase: true
   },
+  gatewayName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  secretHash: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  signatureHeader: {
+    type: String,
+    required: true,
+    trim: true
+  },
   targetDatabaseURI: {
     type: String,
     required: true,
@@ -26,8 +41,8 @@ const serviceRouteSchema = new mongoose.Schema({
   },
   actionType: {
     type: String,
-    enum: ['FUND_WALLET', 'UPGRADE_PLAN'],
-    required: true
+    required: true,
+    trim: true
   },
   status: {
     type: String,

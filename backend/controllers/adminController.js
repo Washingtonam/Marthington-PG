@@ -12,11 +12,24 @@ const getServiceRoutes = async (req, res) => {
 
 const createServiceRoute = async (req, res) => {
   try {
-    const { serviceName, serviceKey, targetDatabaseURI, targetCollection, actionType, status } = req.body;
+    const {
+      serviceName,
+      serviceKey,
+      gatewayName,
+      secretHash,
+      signatureHeader,
+      targetDatabaseURI,
+      targetCollection,
+      actionType,
+      status
+    } = req.body;
 
     const route = await ServiceRoute.create({
       serviceName,
       serviceKey,
+      gatewayName,
+      secretHash,
+      signatureHeader,
       targetDatabaseURI,
       targetCollection,
       actionType,

@@ -3,9 +3,12 @@ import { useState, useEffect } from 'react';
 const emptyForm = {
   serviceName: '',
   serviceKey: '',
+  gatewayName: '',
+  secretHash: '',
+  signatureHeader: '',
   targetDatabaseURI: '',
   targetCollection: '',
-  actionType: 'FUND_WALLET',
+  actionType: '',
   status: 'active'
 };
 
@@ -17,13 +20,16 @@ export default function ServiceForm({ onSubmit, editingRoute, onCancel }) {
       setForm({
         serviceName: editingRoute.serviceName || '',
         serviceKey: editingRoute.serviceKey || '',
+        gatewayName: editingRoute.gatewayName || '',
+        secretHash: editingRoute.secretHash || '',
+        signatureHeader: editingRoute.signatureHeader || '',
         targetDatabaseURI: editingRoute.targetDatabaseURI || '',
         targetCollection: editingRoute.targetCollection || '',
-        actionType: editingRoute.actionType || 'FUND_WALLET',
+        actionType: editingRoute.actionType || '',
         status: editingRoute.status || 'active'
       });
     } else {
-      setForm(emptyForm);
+      setForm({ ...emptyForm });
     }
   }, [editingRoute]);
 
@@ -49,6 +55,18 @@ export default function ServiceForm({ onSubmit, editingRoute, onCancel }) {
           <input name="serviceKey" required value={form.serviceKey} onChange={handleChange} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none" />
         </label>
         <label className="text-sm text-slate-300">
+          <span className="mb-2 block font-medium">Gateway name</span>
+          <input name="gatewayName" required value={form.gatewayName} onChange={handleChange} placeholder="e.g. Flutterwave" className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none" />
+        </label>
+        <label className="text-sm text-slate-300">
+          <span className="mb-2 block font-medium">Webhook secret hash</span>
+          <input name="secretHash" required type="password" value={form.secretHash} onChange={handleChange} placeholder="Enter the gateway secret" className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none" />
+        </label>
+        <label className="text-sm text-slate-300">
+          <span className="mb-2 block font-medium">Signature header name</span>
+          <input name="signatureHeader" required value={form.signatureHeader} onChange={handleChange} placeholder="e.g. verif-hash or x-paystack-signature" className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none" />
+        </label>
+        <label className="text-sm text-slate-300">
           <span className="mb-2 block font-medium">Target database URI</span>
           <input name="targetDatabaseURI" required value={form.targetDatabaseURI} onChange={handleChange} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none" />
         </label>
@@ -58,10 +76,7 @@ export default function ServiceForm({ onSubmit, editingRoute, onCancel }) {
         </label>
         <label className="text-sm text-slate-300">
           <span className="mb-2 block font-medium">Action type</span>
-          <select name="actionType" value={form.actionType} onChange={handleChange} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none">
-            <option value="FUND_WALLET">FUND_WALLET</option>
-            <option value="UPGRADE_PLAN">UPGRADE_PLAN</option>
-          </select>
+          <input name="actionType" required value={form.actionType} onChange={handleChange} placeholder="e.g. UPGRADE_PLAN or BUY_EBOOK" className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none" />
         </label>
         <label className="text-sm text-slate-300">
           <span className="mb-2 block font-medium">Status</span>

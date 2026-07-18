@@ -3,6 +3,7 @@ const { verifySignature, routeWebhook } = require('../controllers/webhookControl
 
 const router = express.Router();
 
-router.post('/receiver', verifySignature, routeWebhook);
+router.post('/receiver/:serviceKey?', verifySignature, routeWebhook);
+router.post('/:serviceKey?', verifySignature, routeWebhook);
 
 module.exports = router;
