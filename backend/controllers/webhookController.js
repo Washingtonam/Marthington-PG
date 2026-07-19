@@ -104,6 +104,41 @@ const getTargetDocumentQuery = (payload, route) => {
   return { _id: { $exists: true } };
 };
 
+const buildCallbackPayload = ({ route, transactionId, serviceKey, amount, currency, status, actionType, payload, result }) => ({
+  event: 'payment.webhook.received',
+  serviceKey,
+  transactionId,
+  actionType,
+  amount,
+  currency,
+  status,
+  gatewayName: route?.gatewayName || null,
+  payload,
+  result
+});
+
+const notifyCallbackUrl = async (route, eventPayload) => {
+  if (!route?.callbackUrl) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(route.callbackUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Central-Signature': crypto.createHmac('sha256', route.secretHash || '').update(JSON.stringify(eventPayload)).digest('hex')
+      },
+      body: JSON.stringify(eventPayload)
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Callback notification failed:', error.message);
+    return null;
+  }
+};
+
 const buildDynamicUpdate = (actionType, payload, amount, currency) => {
   const normalizedAction = String(actionType || '').trim().toUpperCase();
   const update = {
@@ -164,6 +199,19 @@ const routeWebhook = async (req, res) => {
     const update = buildDynamicUpdate(route.actionType, payload, amount, currency);
 
     const result = await targetModel.updateOne(safeQuery, update, { upsert: false });
+    const eventPayload = buildCallbackPayload({
+      route,
+      transactionId,
+      serviceKey,
+      amount,
+      currency,
+      status: 'success',
+      actionType: route.actionType,
+      payload,
+      result
+    });
+
+    await notifyCallbackUrl(route, eventPayload);
 
     await WebhookLog.create({
       transactionId,
@@ -197,5 +245,6 @@ const routeWebhook = async (req, res) => {
 
 module.exports = {
   verifySignature,
-  routeWebhook
+  routeWebhook,
+  buildCallbackPayload
 };

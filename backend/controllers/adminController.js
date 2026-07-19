@@ -18,6 +18,7 @@ const createServiceRoute = async (req, res) => {
       gatewayName,
       secretHash,
       signatureHeader,
+      callbackUrl,
       targetDatabaseURI,
       targetCollection,
       actionType,

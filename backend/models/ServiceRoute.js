@@ -29,6 +29,10 @@ const serviceRouteSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  callbackUrl: {
+    type: String,
+    trim: true
+  },
   targetDatabaseURI: {
     type: String,
     required: true,

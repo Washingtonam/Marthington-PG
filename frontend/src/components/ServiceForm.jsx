@@ -6,6 +6,7 @@ const emptyForm = {
   gatewayName: '',
   secretHash: '',
   signatureHeader: '',
+  callbackUrl: '',
   targetDatabaseURI: '',
   targetCollection: '',
   actionType: '',
@@ -23,6 +24,7 @@ export default function ServiceForm({ onSubmit, editingRoute, onCancel }) {
         gatewayName: editingRoute.gatewayName || '',
         secretHash: editingRoute.secretHash || '',
         signatureHeader: editingRoute.signatureHeader || '',
+        callbackUrl: editingRoute.callbackUrl || '',
         targetDatabaseURI: editingRoute.targetDatabaseURI || '',
         targetCollection: editingRoute.targetCollection || '',
         actionType: editingRoute.actionType || '',
@@ -65,6 +67,10 @@ export default function ServiceForm({ onSubmit, editingRoute, onCancel }) {
         <label className="text-sm text-slate-300">
           <span className="mb-2 block font-medium">Signature header name</span>
           <input name="signatureHeader" required value={form.signatureHeader} onChange={handleChange} placeholder="e.g. verif-hash or x-paystack-signature" className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none" />
+        </label>
+        <label className="text-sm text-slate-300">
+          <span className="mb-2 block font-medium">Callback URL</span>
+          <input name="callbackUrl" value={form.callbackUrl} onChange={handleChange} placeholder="https://your-app.com/api/payments/callback" className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-white outline-none" />
         </label>
         <label className="text-sm text-slate-300">
           <span className="mb-2 block font-medium">Target database URI</span>
